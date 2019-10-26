@@ -1,0 +1,13 @@
+* Layout Visualization
+
+#+NAME: fig:layout-wramos
+[[./ergodox-ez-wramos-layout.png]]
+
+The visualization [[fig:layout-wramos]] has been created with
+[[http://www.keyboard-layout-editor.com]].
+
+* Using the layout under windows
+
+Build [[./us-wra.klc]] with [[https://www.microsoft.com/en-usdownload/details.aspx?id=22339][Microsoft Keyboard Layout Creator]] and install
+the resulting DLL. Then select the new Layout /English United States -
+WRA - Custom keybord/.
