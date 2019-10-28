@@ -162,11 +162,11 @@ KC_TRNS, KC_TRNS, KC_TRNS
  * ,--------------------------------------------------.          ,--------------------------------------------------.
  * |        |      |      |      |      |      |      |          |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|          |------+------+------+------+------+------+--------|
- * |  MAcc2 |      | MWup | MsUp |MWdown|      |      |          |      |      |      |      |      |      |        |
+ * |        |      | MWup | MsUp |MWdown|      |      |          |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|      |          |      |------+------+------+------+------+--------|
- * |  MAcc1 | Lclk |MsLeft|MsDown|MsRght| Rclk |------|          |------|      |      |      |      |      |        |
+ * |        | Lclk |MsLeft|MsDown|MsRght| Rclk |------|          |------|      | MAcc2| MAcc1| MAcc0|      |        |
  * |--------+------+------+------+------+------|      |          |      |------+------+------+------+------+--------|
- * |  MAcc0 |      |MWleft|      | MWrgt|      |      |          |      |      |      |      |      |      |        |
+ * |        |      |MWleft|      | MWrgt|      |      |          |      |      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'          `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                      |      |      |      |      |      |
  *   `----------------------------------'                                      `----------------------------------'
@@ -181,7 +181,7 @@ KC_TRNS, KC_TRNS, KC_TRNS
 [SPECIAL_LEFT] = LAYOUT_ergodox(
 // left hand
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-KC_ACL2, KC_TRNS, KC_WH_U, KC_MS_U, KC_WH_D, KC_TRNS, KC_TRNS,
+KC_TRNS,   KC_TRNS, KC_WH_U, KC_MS_U, KC_WH_D, KC_TRNS, KC_TRNS,
 KC_ACL1, KC_BTN1, KC_MS_L, KC_MS_D, KC_MS_R, KC_BTN2,
 KC_ACL0, KC_TRNS, KC_WH_L, KC_TRNS, KC_WH_R, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -191,9 +191,9 @@ KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+         KC_TRNS, KC_ACL2, KC_ACL1, KC_ACL0, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
