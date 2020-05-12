@@ -313,7 +313,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             GRAVE_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER = timer_read32();
             tap_code(KC_CAPS);
         } else {
-            uint32_t elapsed = timer_elapsed32(CTL_DOT_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER);
+            uint32_t elapsed = timer_elapsed32(GRAVE_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER);
             if(elapsed <= TAPPING_TERM)
             {
                 tap_code(KC_CAPS);
@@ -328,7 +328,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             MINUS_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER = timer_read32();
             tap_code(KC_CAPS);
         } else {
-            uint32_t elapsed = timer_elapsed32(CTL_DOT_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER);
+            uint32_t elapsed = timer_elapsed32(MINUS_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER);
             if(elapsed <= TAPPING_TERM)
             {
                 tap_code(KC_CAPS);
