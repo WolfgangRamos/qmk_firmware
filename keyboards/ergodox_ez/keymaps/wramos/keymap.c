@@ -61,20 +61,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox(
   // left hand
-  KC_NO,                            KC_F1,                  KC_F2,         KC_F3,                      KC_F4,                      KC_F5,            KC_F6,
-  KC_NUBS,                          KC_Q,                   KC_W,          KC_E,                       KC_R,                       KC_T,             KC_PGUP,
-  MT(MOD_LSFT,KC_EQL),              LT(SPECIAL_RIGHT,KC_A), LT(NUMB,KC_S), MT(MOD_LSFT|MOD_LCTL,KC_D), MT(MOD_LSFT|MOD_LALT,KC_F), MT(MOD_MEH,KC_G),
-  grave_when_tapped_caps_when_held, KC_Z,                   KC_X,          KC_C,                       KC_V,                       KC_B,             KC_PGDN,
+  KC_NO,                            KC_F1,                  KC_F2,         KC_F3,                      KC_F4,             KC_F5,                      KC_F6,
+  KC_NUBS,                          KC_Q,                   KC_W,          KC_E,                       KC_R,              KC_T,                       KC_PGUP,
+  MT(MOD_MEH,KC_EQL),               LT(SPECIAL_RIGHT,KC_A), LT(NUMB,KC_S), MT(MOD_LSFT|MOD_LCTL,KC_D), MT(MOD_LSFT,KC_F), MT(MOD_LSFT|MOD_LALT,KC_G),
+  grave_when_tapped_caps_when_held, KC_Z,                   KC_X,          KC_C,                       KC_V,              KC_B,                       KC_PGDN,
   KC_NO,                            KC_LGUI,                KC_NO,         KC_NO,                      KC_HOME,
                                                            KC_INS,              TG(NUMB),
                                                                                 TG(SPECIAL_RIGHT),
                                       MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), ctl_c_when_tapped_ctl_alt_when_held,
   // right hand
-  KC_F7,      KC_F8,            KC_F9,                      KC_F10,                     KC_F11,        KC_F12,                   KC_NO,
-  KC_ESC,     KC_Y,             KC_U,                       KC_I,                       KC_O,          KC_P,                     KC_BSLS,
-              MT(MOD_MEH,KC_H), MT(MOD_RSFT|MOD_LALT,KC_J), MT(MOD_RSFT|MOD_RCTL,KC_K), LT(SYMB,KC_L), LT(SPECIAL_LEFT,KC_SCLN), MT(MOD_RSFT,KC_QUOT),
-  SHIFT_LOCK, KC_N,             KC_M,                       KC_COMM,                    KC_DOT,        KC_SLSH,                  minus_when_tapped_caps_when_held,
-                                KC_END,                     KC_NO,                      KC_NO,         KC_RGUI,                  KC_NO,
+  KC_F7,      KC_F8,                      KC_F9,             KC_F10,                     KC_F11,        KC_F12,                   KC_NO,
+  KC_ESC,     KC_Y,                       KC_U,              KC_I,                       KC_O,          KC_P,                     KC_BSLS,
+              MT(MOD_RSFT|MOD_LALT,KC_H), MT(MOD_RSFT,KC_J), MT(MOD_RSFT|MOD_RCTL,KC_K), LT(SYMB,KC_L), LT(SPECIAL_LEFT,KC_SCLN), MT(MOD_MEH,KC_QUOT),
+  SHIFT_LOCK, KC_N,                       KC_M,              KC_COMM,                    KC_DOT,        KC_SLSH,                  minus_when_tapped_caps_when_held,
+                                          KC_END,            KC_NO,                      KC_NO,         KC_RGUI,                  KC_NO,
   KC_PSCR,                               KC_DEL,
   KC_PAUS,
   ctl_dot_when_tapped_ctl_alt_when_held, MT(MOD_LALT,KC_BSPC), MT(MOD_RCTL,KC_SPC)
