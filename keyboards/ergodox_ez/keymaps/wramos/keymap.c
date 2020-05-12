@@ -308,7 +308,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
-    case grave_when_tapped_caps_when_held
+    case grave_when_tapped_caps_when_held:
         if(record->event.pressed) {
             GRAVE_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER = timer_read32();
             tap_code(KC_CAPS);
@@ -323,7 +323,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         }
         return false;
-    case minus_when_tapped_caps_when_held
+    case minus_when_tapped_caps_when_held:
         if(record->event.pressed) {
             MINUS_WHEN_TAPPED_CAPS_WHEN_HELD_TIMER = timer_read32();
             tap_code(KC_CAPS);
@@ -337,7 +337,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_CAPS);
             }
         }
-    return false;
+        return false;
     default:
         return true;
     }
