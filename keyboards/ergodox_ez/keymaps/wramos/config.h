@@ -11,7 +11,7 @@
 #define PERMISSIVE_HOLD
 
 #undef QMK_KEYS_PER_SCAN
-#define QMK_KEYS_PER_SCAN 4
+#define QMK_KEYS_PER_SCAN 8
 
 #define NO_ACTION_ONESHOT
 
