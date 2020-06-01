@@ -1,18 +1,13 @@
-#ifndef ERGODOX_WRAMOS_CONFIG_H
-
-#define ERGODOX_WRAMOS_CONFIG_H
+#pragma once
 
 #undef TAPPING_TERM
 #define TAPPING_TERM 170
 
 #undef TAPPING_FORCE_HOLD
+#define TAPPING_FORCE_HOLD
 
 #undef PERMISSIVE_HOLD
-#define PERMISSIVE_HOLD
+//#define PERMISSIVE_HOLD //
 
 #undef QMK_KEYS_PER_SCAN
 #define QMK_KEYS_PER_SCAN 8
-
-#define NO_ACTION_ONESHOT
-
-#endif
