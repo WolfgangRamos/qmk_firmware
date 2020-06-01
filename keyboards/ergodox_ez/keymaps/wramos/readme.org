@@ -1,7 +1,7 @@
 * Layout Visualization
 
 #+NAME: fig:layout-wramos
-[[./Ergodox-EZ-wramos-layout.png]]
+[[./ergodox-ez-wramos-layout.png]]
 
 The visualization [[fig:layout-wramos]] has been created with
 [[http://www.keyboard-layout-editor.com]].
