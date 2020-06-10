@@ -11,6 +11,8 @@
 #define ARRW 3 // arrow key layer
 #define SHFT 4 // shift lock layer
 
+uint32_t CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = 0;
+
 enum custom_keycodes {
     CAPS_A = SAFE_RANGE,
     CAPS_E,
@@ -23,7 +25,8 @@ enum custom_keycodes {
     CAPS_GRV,
     CAPS_M,
     CAPS_SCLN,
-    CAPS_DOT
+    CAPS_DOT,
+    ctl_c_when_tapped_ctl_alt_when_held,
 };
 
 /* Keymap */
@@ -33,18 +36,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_ergodox(
 // left hand
 KC_NUBS, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6,
-KC_GRV,  KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,  KC_PGUP,
-KC_LSFT, KC_A,  KC_S,  KC_D,  KC_F,  KC_G,
-KC_EQL,  KC_Y,  KC_X,  KC_C,  KC_V,  KC_B,  KC_LGUI,
+KC_NO,  KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,  KC_NO,
+KC_EQL, KC_A,  LT(NUMB,KC_S),  MT(MOD_LSFT,KC_D),  KC_F,  KC_G,
+KC_GRV,  KC_Y,  KC_X,  KC_C,  KC_V,  KC_B,  KC_LGUI,
 KC_NO,   KC_NO, KC_NO, KC_NO, MO(NUMB),
                      KC_INS,              KC_NO,
                                           TG(ARRW),
-MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), MT(MOD_LCTL|MOD_LALT,KC_PGDN),
+MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), ctl_c_when_tapped_ctl_alt_when_held,
 // right hand
 KC_F7,      KC_F8, KC_F9,    KC_F10,  KC_F11,  KC_F12,  EEPROM_RESET,
-KC_ESC,     KC_Z,  KC_U,     KC_I,    KC_O,    KC_P,    KC_QUOT,
-            KC_H,  KC_J,     KC_K,    KC_L,    KC_SCLN, KC_RSFT,
-TG(SHFT),   KC_N,  KC_M,     KC_COMM, KC_DOT,  KC_MINS, MO(SYMB),
+KC_ESC,     KC_Z,  KC_U,     KC_I,    KC_O,    KC_P,    KC_BSLS,
+KC_H,  KC_J,     MT(MOD_RSFT,KC_K),    LT(SYMB,KC_L),    KC_SCLN, KC_QUOT,
+TG(SHFT),   KC_N,  KC_M,     KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
                    MO(ARRW), KC_NO,   KC_NO,   KC_NO,   KC_NO,
 KC_NO,                        KC_PSCR,
 TG(NUMB),
@@ -63,9 +66,9 @@ KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
                                     KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
 KC_TRNS, KC_6   , KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
-KC_TRNS, KC_BSLS, KC_7,    KC_8,    KC_9,    CAPS_S,  KC_TRNS,
-         KC_0,    KC_4,    KC_5,    KC_6,    CAPS_O,  KC_TRNS,
-KC_TRNS, KC_SLSH, KC_1,    KC_2,    KC_3,    CAPS_U,  KC_TRNS,
+KC_TRNS, CAPS_E, KC_7,    KC_8,    KC_9,    CAPS_S,  KC_TRNS,
+         CAPS_A,    KC_4,    KC_5,    KC_6,    KC_0,  KC_TRNS,
+KC_TRNS, CAPS_U, KC_1,    KC_2,    KC_3,    CAPS_O,  KC_TRNS,
                   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
@@ -74,8 +77,8 @@ KC_TRNS, KC_TRNS, KC_TRNS
 
 [SYMB] = LAYOUT_ergodox(
 // left hand
-CAPS_NUBS, KC_1   , KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
-CAPS_GRV,  KC_AT,   KC_PIPE, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
+KC_TRNS, KC_1   , KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
+KC_TRNS,  KC_AT,   KC_PIPE, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
 KC_TRNS,   KC_EXLM, KC_AMPR, KC_LPRN, KC_RPRN, KC_HASH,
 KC_TRNS,   KC_ASTR, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
 KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -95,11 +98,11 @@ KC_TRNS, KC_TRNS, KC_TRNS
 
 [ARRW] = LAYOUT_ergodox(
 // left hand
-KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,       KC_TRNS,   KC_TRNS,
-KC_TRNS, CAPS_SLSH, KC_HOME,  KC_UP,   KC_END,        CAPS_SCLN, KC_TRNS,
-KC_TRNS, CAPS_A,    KC_LEFT,  KC_DOWN, KC_RGHT,       CAPS_E,
-KC_TRNS, KC_APP,    CAPS_DOT, CAPS_M,  LSFT(KC_SLSH), CAPS_BSLS, KC_TRNS,
-KC_TRNS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,
+CAPS_NUBS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,       KC_TRNS,   KC_TRNS,
+KC_TRNS, KC_TRNS,   KC_HOME,  KC_UP,   KC_END,        KC_PGUP, KC_TRNS,
+KC_TRNS, KC_APP,    KC_LEFT,  KC_DOWN, KC_RGHT,       KC_PGDN,
+KC_TRNS, CAPS_SLSH, CAPS_DOT, CAPS_M,  CAPS_BSLS, CAPS_SCLN, KC_TRNS,
+CAPS_GRV, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
@@ -146,6 +149,24 @@ void caps(uint16_t keycode, keyrecord_t *record) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+    case ctl_c_when_tapped_ctl_alt_when_held:
+        if(record->event.pressed) {
+            CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = timer_read32();
+            register_code(KC_LCTL);
+            register_code(KC_LALT);
+        } else {
+            uint32_t elapsed = timer_elapsed32(CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER);
+            if(elapsed <= TAPPING_TERM)
+            {
+                unregister_code(KC_LALT);
+                tap_code(KC_C);
+                unregister_code(KC_LCTL);
+            } else {
+                unregister_code(KC_LALT);
+                unregister_code(KC_LCTL);
+            }
+        }
+        return false;
     case CAPS_A:
         caps(KC_A, record);
         return false;
