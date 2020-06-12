@@ -11,6 +11,9 @@
 #define ARRW 3 // arrow key layer
 #define SHFT 4 // shift lock layer
 
+// dummy macro for aligning keyboard layout in source code
+#define _NOKEY
+
 uint32_t CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = 0;
 
 enum custom_keycodes {
@@ -35,20 +38,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [BASE] = LAYOUT_ergodox(
 // left hand
-KC_NUBS, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6,
-KC_NO,  KC_Q,  KC_W,  KC_E,  KC_R,  KC_T,  KC_NO,
-KC_EQL, KC_A,  LT(NUMB,KC_S),  MT(MOD_LSFT,KC_D),  KC_F,  KC_G,
-KC_GRV,  KC_Y,  KC_X,  KC_C,  KC_V,  KC_B,  KC_LGUI,
-KC_NO,   KC_NO, KC_NO, KC_NO, MO(NUMB),
-                     KC_INS,              KC_NO,
-                                          TG(ARRW),
+KC_NUBS, KC_F1, KC_F2,         KC_F3,             KC_F4, KC_F5, KC_F6,
+KC_NO,   KC_Q,  KC_W,          KC_E,              KC_R,  KC_T,  KC_NO,
+KC_EQL,  KC_A,  LT(NUMB,KC_S), MT(MOD_LSFT,KC_D), KC_F,  KC_G,
+KC_GRV,  KC_Y,  KC_X,          KC_C,              KC_V,  KC_B,  KC_LGUI,
+KC_NO,   KC_NO, KC_NO,         KC_NO,             KC_NO,
+_NOKEY               KC_INS,              KC_NO,
+_NOKEY               _NOKEY               TG(ARRW),
 MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), ctl_c_when_tapped_ctl_alt_when_held,
+
 // right hand
-KC_F7,      KC_F8, KC_F9,    KC_F10,  KC_F11,  KC_F12,  EEPROM_RESET,
-KC_ESC,     KC_Z,  KC_U,     KC_I,    KC_O,    KC_P,    KC_BSLS,
-KC_H,  KC_J,     MT(MOD_RSFT,KC_K),    LT(SYMB,KC_L),    KC_SCLN, KC_QUOT,
-TG(SHFT),   KC_N,  KC_M,     KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
-                   MO(ARRW), KC_NO,   KC_NO,   KC_NO,   KC_NO,
+KC_F7,    KC_F8,  KC_F9,         KC_F10,            KC_F11,        KC_F12,  EEPROM_RESET,
+KC_ESC,   KC_Z,   KC_U,          KC_I,              KC_O,          KC_P,    KC_BSLS,
+_NOKEY    KC_H,   LT(ARRW,KC_J), MT(MOD_RSFT,KC_K), LT(SYMB,KC_L), KC_SCLN, KC_QUOT,
+TG(SHFT), KC_N,   KC_M,          KC_COMM,           KC_DOT,        KC_SLSH, KC_MINS,
+_NOKEY    _NOKEY  KC_NO,         KC_NO,             KC_NO,         KC_NO,   KC_NO,
 KC_NO,                        KC_PSCR,
 TG(NUMB),
 MT(MOD_LCTL|MOD_LALT,KC_DEL), MT(MOD_LALT,KC_BSPC), MT(MOD_RCTL,KC_SPC)
@@ -56,20 +60,21 @@ MT(MOD_LCTL|MOD_LALT,KC_DEL), MT(MOD_LALT,KC_BSPC), MT(MOD_RCTL,KC_SPC)
 
 [NUMB] = LAYOUT_ergodox(
 // left hand
-KC_TRNS, KC_1   , KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
+KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                                             KC_TRNS, KC_TRNS,
-                                                      KC_TRNS,
-                                    KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY   KC_TRNS,
+KC_TRNS, KC_TRNS, KC_TRNS,
+
 // right hand
-KC_TRNS, KC_6   , KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
+KC_TRNS, KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
 KC_TRNS, CAPS_E, KC_7,    KC_8,    KC_9,    CAPS_S,  KC_TRNS,
-         CAPS_A,    KC_4,    KC_5,    KC_6,    KC_0,  KC_TRNS,
+_NOKEY   CAPS_A, KC_4,    KC_5,    KC_6,    KC_0,    KC_TRNS,
 KC_TRNS, CAPS_U, KC_1,    KC_2,    KC_3,    CAPS_O,  KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
@@ -77,20 +82,20 @@ KC_TRNS, KC_TRNS, KC_TRNS
 
 [SYMB] = LAYOUT_ergodox(
 // left hand
-KC_TRNS, KC_1   , KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
-KC_TRNS,  KC_AT,   KC_PIPE, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
-KC_TRNS,   KC_EXLM, KC_AMPR, KC_LPRN, KC_RPRN, KC_HASH,
-KC_TRNS,   KC_ASTR, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
-KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-KC_TRNS,   KC_TRNS,
-KC_TRNS,
+KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
+KC_TRNS, KC_AT,   KC_PIPE, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
+KC_TRNS, KC_EXLM, KC_AMPR, KC_LPRN, KC_RPRN, KC_HASH,
+KC_TRNS, KC_ASTR, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
+KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY   KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
-KC_TRNS, KC_6   , KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
+KC_TRNS, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY    _NOKEY  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
@@ -98,20 +103,20 @@ KC_TRNS, KC_TRNS, KC_TRNS
 
 [ARRW] = LAYOUT_ergodox(
 // left hand
-CAPS_NUBS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,       KC_TRNS,   KC_TRNS,
-KC_TRNS, KC_TRNS,   KC_HOME,  KC_UP,   KC_END,        KC_PGUP, KC_TRNS,
-KC_TRNS, KC_APP,    KC_LEFT,  KC_DOWN, KC_RGHT,       KC_PGDN,
-KC_TRNS, CAPS_SLSH, CAPS_DOT, CAPS_M,  CAPS_BSLS, CAPS_SCLN, KC_TRNS,
-CAPS_GRV, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,
-KC_TRNS, KC_TRNS,
-KC_TRNS,
+CAPS_NUBS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,   KC_TRNS,   KC_TRNS,
+KC_TRNS,   KC_TRNS,   KC_HOME,  KC_UP,   KC_END,    KC_PGUP,   KC_TRNS,
+KC_TRNS,   KC_APP,    KC_LEFT,  KC_DOWN, KC_RGHT,   KC_PGDN,
+KC_TRNS,   CAPS_SLSH, CAPS_DOT, CAPS_M,  CAPS_BSLS, CAPS_SCLN, KC_TRNS,
+CAPS_GRV,  KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY   KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-                  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
@@ -123,16 +128,16 @@ KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 KC_TRNS, LSFT(KC_Q), LSFT(KC_W), LSFT(KC_E), LSFT(KC_R), LSFT(KC_T), KC_TRNS,
 KC_TRNS, LSFT(KC_A), LSFT(KC_S), LSFT(KC_D), LSFT(KC_F), LSFT(KC_G),
 KC_TRNS, LSFT(KC_Y), LSFT(KC_X), LSFT(KC_C), LSFT(KC_V), LSFT(KC_B), KC_TRNS,
-KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-KC_TRNS, KC_TRNS,
-KC_TRNS,
+KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+_NOKEY   KC_TRNS, KC_TRNS,
+_NOKEY   _NOKEY   KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
 KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 KC_TRNS, LSFT(KC_Z), LSFT(KC_U), LSFT(KC_I), LSFT(KC_O), LSFT(KC_P), KC_TRNS,
-         LSFT(KC_H), LSFT(KC_J), LSFT(KC_K), LSFT(KC_L), KC_TRNS,    KC_TRNS,
+_NOKEY   LSFT(KC_H), LSFT(KC_J), LSFT(KC_K), LSFT(KC_L), KC_TRNS,    KC_TRNS,
 KC_TRNS, LSFT(KC_N), LSFT(KC_M), KC_TRNS,    KC_TRNS,    KC_UNDS,    KC_TRNS,
-                     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+_NOKEY   _NOKEY      KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
