@@ -27,9 +27,45 @@ enum custom_keycodes {
     CAPS_NUBS,
     CAPS_GRV,
     CAPS_M,
-    CAPS_SCLN,
-    CAPS_DOT,
+    CAPS_T,
+    CAPS_D,
     ctl_c_when_tapped_ctl_alt_when_held,
+};
+
+enum tap_dance_keycodes {
+    ALT_SHIFT_S_START_STOP_RECORDING_MACRO,
+};
+
+void alt_shift_s_start_stop_recording_macro_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_mods(KC_LSHIFT);
+        register_code(KC_LALT);
+        register_code(KC_S);
+    } else {
+        register_code(KC_SCLN);
+        uint32_t elapsed = timer_elapsed32(state->timer);
+        if(elapsed <= TAPPING_TERM)
+        {
+
+        }
+    }
+}
+
+void dance_cln_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code(KC_S);
+        unregister_code(KC_LALT);
+        unregister_code(KC_LSHIFT);
+    } else {
+        unregister_code(KC_SCLN);
+    }
+}
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [ALT_SHIFT_S_START_STOP_RECORDING_MACRO] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alt_shift_s_start_stop_recording_macro_finished, dance_cln_reset),
+    [0] = ACTION_TAP_DANCE_DOUBLE()
 };
 
 /* Keymap */
@@ -38,24 +74,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [BASE] = LAYOUT_ergodox(
 // left hand
-KC_NUBS, KC_F1, KC_F2,         KC_F3,             KC_F4, KC_F5, KC_F6,
-KC_NO,   KC_Q,  KC_W,          KC_E,              KC_R,  KC_T,  KC_NO,
-KC_EQL,  KC_A,  LT(NUMB,KC_S), MT(MOD_LSFT,KC_D), KC_F,  KC_G,
-KC_GRV,  KC_Y,  KC_X,          KC_C,              KC_V,  KC_B,  KC_LGUI,
-KC_NO,   KC_NO, KC_NO,         KC_NO,             KC_NO,
-_NOKEY               KC_INS,              KC_NO,
+KC_NO,   KC_F1, KC_F2,         KC_F3,             KC_F4,   KC_F5, KC_F6,
+KC_NUBS, KC_Q,  KC_W,          KC_E,              KC_R,    KC_T,  LSFT(LALT(KC_S)),
+KC_EQL,  KC_A,  LT(NUMB,KC_S), MT(MOD_LSFT,KC_D), KC_F,    KC_G,
+KC_GRV,  KC_Y,  KC_X,          KC_C,              KC_V,    KC_B,  KC_INS,
+KC_NO,   KC_NO, KC_NO,         KC_NO,             KC_LGUI,
+_NOKEY               KC_PAUSE,            KC_NO,
 _NOKEY               _NOKEY               TG(ARRW),
 MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), ctl_c_when_tapped_ctl_alt_when_held,
 
 // right hand
 KC_F7,    KC_F8,  KC_F9,         KC_F10,            KC_F11,        KC_F12,  EEPROM_RESET,
 KC_ESC,   KC_Z,   KC_U,          KC_I,              KC_O,          KC_P,    KC_BSLS,
-_NOKEY    KC_H,   LT(ARRW,KC_J), MT(MOD_RSFT,KC_K), LT(SYMB,KC_L), KC_SCLN, KC_QUOT,
+_NOKEY    KC_H,   LT(ARRW,KC_J), MT(MOD_LSFT,KC_K), LT(SYMB,KC_L), KC_SCLN, KC_QUOT,
 TG(SHFT), KC_N,   KC_M,          KC_COMM,           KC_DOT,        KC_SLSH, KC_MINS,
-_NOKEY    _NOKEY  KC_NO,         KC_NO,             KC_NO,         KC_NO,   KC_NO,
+_NOKEY    _NOKEY  KC_LGUI,       KC_NO,             KC_NO,         KC_NO,   KC_NO,
 KC_NO,                        KC_PSCR,
 TG(NUMB),
-MT(MOD_LCTL|MOD_LALT,KC_DEL), MT(MOD_LALT,KC_BSPC), MT(MOD_RCTL,KC_SPC)
+MT(MOD_LCTL|MOD_LALT,KC_DEL), MT(MOD_LALT,KC_BSPC), MT(MOD_LCTL,KC_SPC)
 ),
 
 [NUMB] = LAYOUT_ergodox(
@@ -83,7 +119,7 @@ KC_TRNS, KC_TRNS, KC_TRNS
 [SYMB] = LAYOUT_ergodox(
 // left hand
 KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
-KC_TRNS, KC_AT,   KC_PIPE, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
+KC_TRNS, KC_AT,   CAPS_T,  KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
 KC_TRNS, KC_EXLM, KC_AMPR, KC_LPRN, KC_RPRN, KC_HASH,
 KC_TRNS, KC_ASTR, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -103,11 +139,11 @@ KC_TRNS, KC_TRNS, KC_TRNS
 
 [ARRW] = LAYOUT_ergodox(
 // left hand
-CAPS_NUBS, KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,   KC_TRNS,   KC_TRNS,
-KC_TRNS,   KC_TRNS,   KC_HOME,  KC_UP,   KC_END,    KC_PGUP,   KC_TRNS,
-KC_TRNS,   KC_APP,    KC_LEFT,  KC_DOWN, KC_RGHT,   KC_PGDN,
-KC_TRNS,   CAPS_SLSH, CAPS_DOT, CAPS_M,  CAPS_BSLS, CAPS_SCLN, KC_TRNS,
-CAPS_GRV,  KC_TRNS,   KC_TRNS,  KC_TRNS, KC_TRNS,
+CAPS_NUBS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS,
+KC_TRNS,   KC_TRNS,   KC_HOME, KC_UP,   KC_END,    KC_PGUP, KC_TRNS,
+KC_TRNS,   KC_APP,    KC_LEFT, KC_DOWN, KC_RGHT,   KC_PGDN,
+KC_TRNS,   CAPS_SLSH, CAPS_D,  CAPS_M,  CAPS_BSLS, KC_TRNS, KC_TRNS,
+CAPS_GRV,  KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS,
 _NOKEY   KC_TRNS, KC_TRNS,
 _NOKEY   _NOKEY   KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
@@ -125,18 +161,18 @@ KC_TRNS, KC_TRNS, KC_TRNS
 [SHFT] = LAYOUT_ergodox(
 // left hand
 KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-KC_TRNS, LSFT(KC_Q), LSFT(KC_W), LSFT(KC_E), LSFT(KC_R), LSFT(KC_T), KC_TRNS,
-KC_TRNS, LSFT(KC_A), LSFT(KC_S), LSFT(KC_D), LSFT(KC_F), LSFT(KC_G),
-KC_TRNS, LSFT(KC_Y), LSFT(KC_X), LSFT(KC_C), LSFT(KC_V), LSFT(KC_B), KC_TRNS,
+KC_TRNS, RSFT(KC_Q), RSFT(KC_W), RSFT(KC_E), RSFT(KC_R), RSFT(KC_T), KC_TRNS,
+KC_TRNS, RSFT(KC_A), RSFT(KC_S), RSFT(KC_D), RSFT(KC_F), RSFT(KC_G),
+KC_TRNS, RSFT(KC_Y), RSFT(KC_X), RSFT(KC_C), RSFT(KC_V), RSFT(KC_B), KC_TRNS,
 KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 _NOKEY   KC_TRNS, KC_TRNS,
 _NOKEY   _NOKEY   KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS,
 // right hand
 KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-KC_TRNS, LSFT(KC_Z), LSFT(KC_U), LSFT(KC_I), LSFT(KC_O), LSFT(KC_P), KC_TRNS,
-_NOKEY   LSFT(KC_H), LSFT(KC_J), LSFT(KC_K), LSFT(KC_L), KC_TRNS,    KC_TRNS,
-KC_TRNS, LSFT(KC_N), LSFT(KC_M), KC_TRNS,    KC_TRNS,    KC_UNDS,    KC_TRNS,
+KC_TRNS, RSFT(KC_Z), RSFT(KC_U), RSFT(KC_I), RSFT(KC_O), RSFT(KC_P), KC_TRNS,
+_NOKEY   RSFT(KC_H), RSFT(KC_J), RSFT(KC_K), RSFT(KC_L), KC_TRNS,    KC_TRNS,
+KC_TRNS, RSFT(KC_N), RSFT(KC_M), KC_TRNS,    KC_TRNS,    KC_UNDS,    KC_TRNS,
 _NOKEY   _NOKEY      KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
@@ -161,14 +197,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             register_code(KC_LALT);
         } else {
             uint32_t elapsed = timer_elapsed32(CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER);
+            unregister_code(KC_LALT);
+            unregister_code(KC_LCTL);
             if(elapsed <= TAPPING_TERM)
             {
-                unregister_code(KC_LALT);
+                register_code(KC_LSHIFT);
                 tap_code(KC_C);
-                unregister_code(KC_LCTL);
-            } else {
-                unregister_code(KC_LALT);
-                unregister_code(KC_LCTL);
+                unregister_code(KC_LSHIFT);
             }
         }
         return false;
@@ -202,15 +237,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case CAPS_M:
         caps(KC_M, record);
         return false;
-    case CAPS_SCLN:
-        caps(KC_SCLN, record);
+    case CAPS_T:
+        caps(KC_T, record);
         return false;
-    case CAPS_DOT:
-        caps(KC_DOT, record);
+    case CAPS_D:
+        caps(KC_D, record);
         return false;
     default:
         return true;
     }
+
 }
 
 
