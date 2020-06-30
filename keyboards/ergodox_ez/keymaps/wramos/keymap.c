@@ -16,6 +16,125 @@
 
 uint32_t CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = 0;
 
+
+/* tap hold implementation */
+
+// supports up to 32 tap hold key definitions
+#define TAP_HOLD_MIN_KEYCODE 0x5600
+#define TAP_HOLD_MAX_KEYCODE 0x561F
+#define TAP_HOLD_INDEX_MASK 0x1F
+
+#define IS_TAP_HOLD_KEY(keycode) (keycode >= TAP_HOLD_MIN_KEYCODE && keycode <= TAP_HOLD_MAX_KEYCODE)
+
+#define TAP_HOLD_LCTL 0x01
+#define TAP_HOLD_LSFT 0x02
+#define TAP_HOLD_LALT 0x04
+#define TAP_HOLD_LGUI 0x08
+#define TAP_HOLD_RCTL 0x10
+#define TAP_HOLD_RSFT 0x20
+#define TAP_HOLD_RALT 0x40
+#define TAP_HOLD_RGUI 0x80
+
+typedef void (*tap_hold_key_down_function_t)(keyrecord_t *record);
+typedef void (*tap_hold_key_up_function_t)(keyrecord_t *record, uint16_t elapsed);
+
+typedef struct {
+    tap_hold_key_down_function_t on_key_down;
+    tap_hold_key_up_function_t on_key_up;
+    uint16_t timer;
+} tap_hold_t;
+
+
+
+/* to be used in array of tap holds */
+#define TAP_HOLD(on_key_down, on_key_up) { on_key_down, on_key_up }
+
+/* to be used in keymap */
+#define TM(index) (TAP_HOLD_MIN_KEYCODE | ((index)&( TAP_HOLD_INDEX_MASK )))
+
+extern tap_hold_t tap_holds[];
+
+bool process_tap_hold(uint16_t keycode, keyrecord_t *record) {
+    if(IS_TAP_HOLD_KEY(keycode)) {
+        uint16_t idx = keycode & TAP_HOLD_INDEX_MASK;
+        tap_hold_t *tap_hold;
+        tap_hold = &tap_holds[idx];
+
+        if(record->event.pressed) {
+            tap_hold->timer = timer_read32();
+            if(tap_hold->on_key_down)
+            {
+                tap_hold->on_key_down(record);
+            }
+        } else {
+            uint16_t elapsed = timer_elapsed(tap_hold->timer);
+            if(tap_hold->on_key_up)
+            {
+                tap_hold->on_key_up(record, elapsed);
+            }
+        }
+        return false;
+    }
+    return true;
+}
+
+
+/* tap hold configuration */
+
+void shift_tab_ctrl_alt_key_down(keyrecord_t *record)
+{
+    register_mods(TAP_HOLD_LCTL | TAP_HOLD_LALT);
+}
+
+void shift_tab_ctrl_alt_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    unregister_mods(TAP_HOLD_LCTL | TAP_HOLD_LALT);
+    if(elapsed <= TAPPING_TERM) {
+        register_mods(TAP_HOLD_LSFT);
+        tap_code(KC_TAB);
+        unregister_mods(TAP_HOLD_LSFT);
+    }
+}
+
+void shift_d_lshift_key_down(keyrecord_t *record)
+{
+    register_mods(TAP_HOLD_LSFT);
+}
+
+void shift_d_lshift_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    if(elapsed <= TAPPING_TERM) {
+        tap_code(KC_D);
+    }
+    unregister_mods(TAP_HOLD_LSFT);
+}
+
+void shift_k_lshift_key_down(keyrecord_t *record)
+{
+    register_mods(TAP_HOLD_LSFT);
+}
+
+void shift_k_lshift_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    if(elapsed <= TAPPING_TERM) {
+        tap_code(KC_K);
+    }
+    unregister_mods(TAP_HOLD_LSFT);
+}
+
+enum tap_hold_enum {
+    SHIFT_TAB_CTRL_ALT = 0,
+    SHIFT_D_LSHIFT,
+    SHIFT_K_LSHIFT,
+};
+
+tap_hold_t tap_holds[] = {
+    [SHIFT_TAB_CTRL_ALT] = TAP_HOLD(shift_tab_ctrl_alt_key_down, shift_tab_ctrl_alt_key_up),
+    [SHIFT_D_LSHIFT] = TAP_HOLD(shift_d_lshift_key_down, shift_d_lshift_key_up),
+    [SHIFT_K_LSHIFT] = TAP_HOLD(shift_k_lshift_key_down, shift_k_lshift_key_up),
+};
+
+
 enum custom_keycodes {
     CAPS_A = SAFE_RANGE,
     CAPS_E,
@@ -30,42 +149,6 @@ enum custom_keycodes {
     CAPS_T,
     CAPS_D,
     ctl_c_when_tapped_ctl_alt_when_held,
-};
-
-enum tap_dance_keycodes {
-    ALT_SHIFT_S_START_STOP_RECORDING_MACRO,
-};
-
-void alt_shift_s_start_stop_recording_macro_finished(qk_tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        register_mods(KC_LSHIFT);
-        register_code(KC_LALT);
-        register_code(KC_S);
-    } else {
-        register_code(KC_SCLN);
-        uint32_t elapsed = timer_elapsed32(state->timer);
-        if(elapsed <= TAPPING_TERM)
-        {
-
-        }
-    }
-}
-
-void dance_cln_reset(qk_tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        unregister_code(KC_S);
-        unregister_code(KC_LALT);
-        unregister_code(KC_LSHIFT);
-    } else {
-        unregister_code(KC_SCLN);
-    }
-}
-
-// Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
-    [ALT_SHIFT_S_START_STOP_RECORDING_MACRO] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, alt_shift_s_start_stop_recording_macro_finished, dance_cln_reset),
-    [0] = ACTION_TAP_DANCE_DOUBLE()
 };
 
 /* Keymap */

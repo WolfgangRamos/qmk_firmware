@@ -1,7 +1,7 @@
 # uncomment for debugging
 # CONSOLE_ENABLE = yes
 COMMAND_ENABLE = no
-TAP_DANCE_ENABLE = yes
+TAP_DANCE_ENABLE = no
 DEBOUNCE_TYPE = eager_pr
 UNICODE_ENABLE = no
 SWAP_HANDS_ENABLE = no
