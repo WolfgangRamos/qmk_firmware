@@ -14,8 +14,6 @@
 // dummy macro for aligning keyboard layout in source code
 #define _NOKEY
 
-uint32_t CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = 0;
-
 
 /* tap hold implementation */
 
@@ -50,7 +48,7 @@ typedef struct {
 #define TAP_HOLD(on_key_down, on_key_up) { on_key_down, on_key_up }
 
 /* to be used in keymap */
-#define TM(index) (TAP_HOLD_MIN_KEYCODE | ((index)&( TAP_HOLD_INDEX_MASK )))
+#define TH(index) (TAP_HOLD_MIN_KEYCODE | ((index)&( TAP_HOLD_INDEX_MASK )))
 
 extern tap_hold_t tap_holds[];
 
@@ -122,16 +120,67 @@ void shift_k_lshift_key_up(keyrecord_t *record, uint16_t elapsed)
     unregister_mods(TAP_HOLD_LSFT);
 }
 
+void shift_s_number_layer_key_down(keyrecord_t *record)
+{
+    layer_on(NUMB);
+}
+
+void shift_s_number_layer_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    layer_off(NUMB);
+    if(elapsed <= TAPPING_TERM) {
+        register_mods(TAP_HOLD_LSFT);
+        tap_code(KC_S);
+        unregister_mods(TAP_HOLD_LSFT);
+    }
+}
+
+void shift_l_symbol_layer_key_down(keyrecord_t *record)
+{
+    layer_on(SYMB);
+}
+
+void shift_l_symbol_layer_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    layer_off(SYMB);
+    if(elapsed <= TAPPING_TERM) {
+        register_mods(TAP_HOLD_LSFT);
+        tap_code(KC_L);
+        unregister_mods(TAP_HOLD_LSFT);
+    }
+}
+
+void shift_j_arrow_layer_key_down(keyrecord_t *record)
+{
+    layer_on(ARRW);
+}
+
+void shift_j_arrow_layer_key_up(keyrecord_t *record, uint16_t elapsed)
+{
+    layer_off(ARRW);
+    if(elapsed <= TAPPING_TERM) {
+        register_mods(TAP_HOLD_LSFT);
+        tap_code(KC_J);
+        unregister_mods(TAP_HOLD_LSFT);
+    }
+}
+
 enum tap_hold_enum {
     SHIFT_TAB_CTRL_ALT = 0,
-    SHIFT_D_LSHIFT,
+    SHIFT_S_NUMBER_LAYER,
+    SHIFT_L_SYMBOL_LAYER,
+    SHIFT_J_ARROW_LAYER,
     SHIFT_K_LSHIFT,
+    SHIFT_D_LSHIFT,
 };
 
 tap_hold_t tap_holds[] = {
     [SHIFT_TAB_CTRL_ALT] = TAP_HOLD(shift_tab_ctrl_alt_key_down, shift_tab_ctrl_alt_key_up),
     [SHIFT_D_LSHIFT] = TAP_HOLD(shift_d_lshift_key_down, shift_d_lshift_key_up),
     [SHIFT_K_LSHIFT] = TAP_HOLD(shift_k_lshift_key_down, shift_k_lshift_key_up),
+    [SHIFT_S_NUMBER_LAYER] = TAP_HOLD(shift_s_number_layer_key_down, shift_s_number_layer_key_up),
+    [SHIFT_L_SYMBOL_LAYER] = TAP_HOLD(shift_l_symbol_layer_key_down, shift_l_symbol_layer_key_up),
+    [SHIFT_J_ARROW_LAYER] = TAP_HOLD(shift_j_arrow_layer_key_down, shift_j_arrow_layer_key_up),
 };
 
 
@@ -148,7 +197,6 @@ enum custom_keycodes {
     CAPS_M,
     CAPS_T,
     CAPS_D,
-    ctl_c_when_tapped_ctl_alt_when_held,
 };
 
 /* Keymap */
@@ -164,7 +212,7 @@ KC_GRV,  KC_Y,  KC_X,          KC_C,              KC_V,    KC_B,  KC_INS,
 KC_NO,   KC_NO, KC_NO,         KC_NO,             KC_LGUI,
 _NOKEY               KC_PAUSE,            KC_NO,
 _NOKEY               _NOKEY               TG(ARRW),
-MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), ctl_c_when_tapped_ctl_alt_when_held,
+MT(MOD_LCTL,KC_ENT), MT(MOD_LALT,KC_TAB), TH(SHIFT_TAB_CTRL_ALT),
 
 // right hand
 KC_F7,    KC_F8,  KC_F9,         KC_F10,            KC_F11,        KC_F12,  EEPROM_RESET,
@@ -272,24 +320,11 @@ void caps(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case ctl_c_when_tapped_ctl_alt_when_held:
-        if(record->event.pressed) {
-            CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER = timer_read32();
-            register_code(KC_LCTL);
-            register_code(KC_LALT);
-        } else {
-            uint32_t elapsed = timer_elapsed32(CTL_C_WHEN_TAPPED_CTL_ALT_WHEN_HELD_TIMER);
-            unregister_code(KC_LALT);
-            unregister_code(KC_LCTL);
-            if(elapsed <= TAPPING_TERM)
-            {
-                register_code(KC_LSHIFT);
-                tap_code(KC_C);
-                unregister_code(KC_LSHIFT);
-            }
-        }
+    if(!process_tap_hold(keycode, record)){
         return false;
+    }
+
+    switch (keycode) {
     case CAPS_A:
         caps(KC_A, record);
         return false;
