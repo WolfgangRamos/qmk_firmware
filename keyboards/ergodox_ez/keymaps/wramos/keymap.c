@@ -6,10 +6,10 @@
 /* Layers */
 
 #define BASE 0 // default layer
-#define NUMB 1 // numbers
-#define SYMB 2 // symbols
-#define ARRW 3 // arrow key layer
-#define SHFT 4 // shift lock layer
+#define SHFT 1 // shift lock layer
+#define NUMB 2 // numbers
+#define SYMB 3 // symbols
+#define ARRW 4 // arrow key layer
 
 // dummy macro for aligning keyboard layout in source code
 #define _NOKEY
@@ -225,6 +225,27 @@ TG(NUMB),
 MT(MOD_LCTL|MOD_LALT,KC_DEL), MT(MOD_LALT,KC_BSPC), MT(MOD_LCTL,KC_SPC)
 ),
 
+[SHFT] = LAYOUT_ergodox(
+// left hand
+KC_TRNS, KC_TRNS,    KC_TRNS,                  KC_TRNS,            KC_TRNS,    KC_TRNS,    KC_TRNS,
+KC_TRNS, RSFT(KC_Q), RSFT(KC_W),               RSFT(KC_E),         RSFT(KC_R), RSFT(KC_T), KC_TRNS,
+KC_TRNS, RSFT(KC_A), TH(SHIFT_S_NUMBER_LAYER), TH(SHIFT_D_LSHIFT), RSFT(KC_F), RSFT(KC_G),
+KC_TRNS, RSFT(KC_Y), RSFT(KC_X),               RSFT(KC_C),         RSFT(KC_V), RSFT(KC_B), KC_TRNS,
+KC_TRNS, KC_TRNS,    KC_TRNS,                  KC_TRNS,            KC_TRNS,
+_NOKEY   KC_TRNS,    KC_TRNS,
+_NOKEY   _NOKEY      KC_TRNS,
+KC_TRNS, KC_TRNS,    KC_TRNS,
+// right hand
+KC_TRNS, KC_TRNS,    KC_TRNS,                 KC_TRNS,            KC_TRNS,                  KC_TRNS,    KC_TRNS,
+KC_TRNS, RSFT(KC_Z), RSFT(KC_U),              RSFT(KC_I),         RSFT(KC_O),               RSFT(KC_P), KC_TRNS,
+_NOKEY   RSFT(KC_H), TH(SHIFT_J_ARROW_LAYER), TH(SHIFT_K_LSHIFT), TH(SHIFT_L_SYMBOL_LAYER), KC_TRNS,    KC_TRNS,
+KC_TRNS, RSFT(KC_N), RSFT(KC_M),              KC_TRNS,            KC_TRNS,                  KC_UNDS,    KC_TRNS,
+_NOKEY   _NOKEY      KC_TRNS,                 KC_TRNS,            KC_TRNS,                  KC_TRNS,    KC_TRNS,
+KC_TRNS, KC_TRNS,
+KC_TRNS,
+KC_TRNS, KC_TRNS,    KC_TRNS
+),
+
 [NUMB] = LAYOUT_ergodox(
 // left hand
 KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
@@ -287,28 +308,7 @@ _NOKEY   _NOKEY   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 KC_TRNS, KC_TRNS,
 KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS
-),
-
-[SHFT] = LAYOUT_ergodox(
-// left hand
-KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-KC_TRNS, RSFT(KC_Q), RSFT(KC_W), RSFT(KC_E), RSFT(KC_R), RSFT(KC_T), KC_TRNS,
-KC_TRNS, RSFT(KC_A), RSFT(KC_S), RSFT(KC_D), RSFT(KC_F), RSFT(KC_G),
-KC_TRNS, RSFT(KC_Y), RSFT(KC_X), RSFT(KC_C), RSFT(KC_V), RSFT(KC_B), KC_TRNS,
-KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-_NOKEY   KC_TRNS, KC_TRNS,
-_NOKEY   _NOKEY   KC_TRNS,
-KC_TRNS, KC_TRNS, KC_TRNS,
-// right hand
-KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-KC_TRNS, RSFT(KC_Z), RSFT(KC_U), RSFT(KC_I), RSFT(KC_O), RSFT(KC_P), KC_TRNS,
-_NOKEY   RSFT(KC_H), RSFT(KC_J), RSFT(KC_K), RSFT(KC_L), KC_TRNS,    KC_TRNS,
-KC_TRNS, RSFT(KC_N), RSFT(KC_M), KC_TRNS,    KC_TRNS,    KC_UNDS,    KC_TRNS,
-_NOKEY   _NOKEY      KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
-KC_TRNS, KC_TRNS,
-KC_TRNS,
-KC_TRNS, KC_TRNS, KC_TRNS
-),
+)
 };
 
 void caps(uint16_t keycode, keyrecord_t *record) {
@@ -381,19 +381,19 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     bool number_layer_is_on = layer_state_cmp(state, NUMB);
     bool arrow_layer_is_on = layer_state_cmp(state, ARRW);
     bool shift_lock_layer_is_on = layer_state_cmp(state, SHFT);
-    if(number_layer_is_on) {
+    if(shift_lock_layer_is_on) {
         ergodox_right_led_1_on();
     }
     else {
         ergodox_right_led_1_off();
     }
-    if(arrow_layer_is_on) {
+    if(number_layer_is_on) {
         ergodox_right_led_2_on();
     }
     else {
         ergodox_right_led_2_off();
     }
-    if(shift_lock_layer_is_on) {
+    if(arrow_layer_is_on) {
         ergodox_right_led_3_on();
     }
     else {
