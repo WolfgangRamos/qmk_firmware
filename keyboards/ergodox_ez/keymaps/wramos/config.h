@@ -1,7 +1,7 @@
 #pragma once
 
 #undef TAPPING_TERM
-#define TAPPING_TERM 170
+#define TAPPING_TERM 163
 
 #undef DEBOUNCE
 #define DEBOUNCE 5

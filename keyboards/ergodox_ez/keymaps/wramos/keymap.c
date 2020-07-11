@@ -78,15 +78,27 @@ bool process_tap_hold(uint16_t keycode, keyrecord_t *record) {
 
 
 /* tap hold configuration */
+bool shift_tab_ctrl_alt_key_down_release_alt_on_key_up = true;
 
 void shift_tab_ctrl_alt_key_down(keyrecord_t *record)
 {
-    register_mods(TAP_HOLD_LCTL | TAP_HOLD_LALT);
+    if(get_mods() & (TAP_HOLD_LALT | TAP_HOLD_RALT)) {
+        shift_tab_ctrl_alt_key_down_release_alt_on_key_up = false;
+        register_mods(TAP_HOLD_RCTL);
+    } else {
+        shift_tab_ctrl_alt_key_down_release_alt_on_key_up = true;
+        register_mods(TAP_HOLD_RCTL | TAP_HOLD_RALT);
+    }
 }
 
 void shift_tab_ctrl_alt_key_up(keyrecord_t *record, uint16_t elapsed)
 {
-    unregister_mods(TAP_HOLD_LCTL | TAP_HOLD_LALT);
+    if(shift_tab_ctrl_alt_key_down_release_alt_on_key_up) {
+        unregister_mods(TAP_HOLD_RCTL | TAP_HOLD_RALT);
+    } else {
+        unregister_mods(TAP_HOLD_RCTL);
+    }
+
     if(elapsed <= TAPPING_TERM) {
         register_mods(TAP_HOLD_LSFT);
         tap_code(KC_TAB);
@@ -271,9 +283,9 @@ KC_TRNS, KC_TRNS, KC_TRNS
 [SYMB] = LAYOUT_ergodox(
 // left hand
 KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_TRNS,
-KC_TRNS, KC_AT,   CAPS_T,  KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
+KC_TRNS, KC_AT,   KC_ASTR, KC_LCBR, KC_RCBR, KC_DLR,  KC_TRNS,
 KC_TRNS, KC_EXLM, KC_AMPR, KC_LPRN, KC_RPRN, KC_HASH,
-KC_TRNS, KC_ASTR, KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
+KC_TRNS, CAPS_T,  KC_CIRC, KC_LBRC, KC_RBRC, KC_PERC, KC_TRNS,
 KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 _NOKEY   KC_TRNS, KC_TRNS,
 _NOKEY   _NOKEY   KC_TRNS,
